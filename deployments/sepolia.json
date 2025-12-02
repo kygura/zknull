@@ -1,0 +1,21 @@
+{
+  "network": "sepolia",
+  "timestamp": "2025-12-02T20:23:13.854Z",
+  "contracts": {
+    "Hasher": "0xC96604b0d72dffFDc028e1edd311FA0b9C7b8bDc",
+    "Verifier": "0xC4762D52c601C992c4FC5c2309684Ca4834a4c66",
+    "PrivacyRouter": "0x357B7ef3fbd0bAD59D739f9e824aC051434cA5C4",
+    "PrivacyPools": {
+      "1": "0xf1C542d786F147066A443955b2Caf575b806Fd56",
+      "10": "0x77Ab394B7244e0B8fd1c76396D7caD0c3c55b9f4",
+      "0.01": "0x177Ab1347A768860928731740094e8ec16Da91cF",
+      "0.1": "0x538AA5d763b7da2f94bE4b83d692EDfaF8C4f6d2"
+    },
+    "denominations": {
+      "1": "1000000000000000000",
+      "10": "10000000000000000000",
+      "0.01": "10000000000000000",
+      "0.1": "100000000000000000"
+    }
+  }
+}

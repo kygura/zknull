@@ -1,0 +1,266 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/athan/projects/nca-projects/tornadocash/contracts/MerkleTreeWithHistory.sol": {
+      "lastModificationDate": 1764593574434,
+      "contentHash": "37b5549084a526377eba6ac7baf25c85",
+      "sourceName": "contracts/MerkleTreeWithHistory.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IHasher",
+        "MerkleTreeWithHistory"
+      ]
+    },
+    "/home/athan/projects/nca-projects/tornadocash/contracts/Tornado.sol": {
+      "lastModificationDate": 1764593574438,
+      "contentHash": "d863bf3049911495871106d21810b48e",
+      "sourceName": "contracts/Tornado.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./MerkleTreeWithHistory.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IVerifier",
+        "Tornado"
+      ]
+    },
+    "/home/athan/projects/nca-projects/tornadocash/contracts/PrivacyPool.sol": {
+      "lastModificationDate": 1764602436811,
+      "contentHash": "c58c72164cb87cff8593c9ea637cbc5b",
+      "sourceName": "contracts/PrivacyPool.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [
+        "./MerkleTreeWithHistory.sol"
+      ],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IVerifier",
+        "PrivacyPool"
+      ]
+    },
+    "/home/athan/projects/nca-projects/tornadocash/contracts/MockHasher.sol": {
+      "lastModificationDate": 1764593574434,
+      "contentHash": "6baf71eb85fe1ed7f7e0790f42f6277a",
+      "sourceName": "contracts/MockHasher.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "MockHasher"
+      ]
+    },
+    "/home/athan/projects/nca-projects/tornadocash/contracts/MockVerifier.sol": {
+      "lastModificationDate": 1764593574434,
+      "contentHash": "317d145e050b9450926ef7162c9e7337",
+      "sourceName": "contracts/MockVerifier.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IVerifier",
+        "MockVerifier"
+      ]
+    },
+    "/home/athan/projects/nca-projects/tornadocash/contracts/PrivacyRouter.sol": {
+      "lastModificationDate": 1764603038094,
+      "contentHash": "e76d0353bd840da2c66a3882d5778204",
+      "sourceName": "contracts/PrivacyRouter.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "IPrivacyPool",
+        "PrivacyRouter"
+      ]
+    },
+    "/home/athan/projects/nca-projects/tornadocash/contracts/Verifier.sol": {
+      "lastModificationDate": 1764706677254,
+      "contentHash": "b69cfb4579cc75c39abbe05dc266e714",
+      "sourceName": "contracts/Verifier.sol",
+      "solcConfig": {
+        "version": "0.8.24",
+        "settings": {
+          "optimizer": {
+            "enabled": true,
+            "runs": 200
+          },
+          "evmVersion": "paris",
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.7.0 <0.9.0"
+      ],
+      "artifacts": [
+        "Groth16Verifier"
+      ]
+    }
+  }
+}

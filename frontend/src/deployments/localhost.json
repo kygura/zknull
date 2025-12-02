@@ -1,0 +1,21 @@
+{
+  "network": "hardhat",
+  "timestamp": "2025-12-01T19:19:18.124Z",
+  "contracts": {
+    "MockHasher": "0x5FbDB2315678afecb367f032d93F642f64180aa3",
+    "MockVerifier": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+    "PrivacyRouter": "0x0165878A594ca255338adfa4d48449f69242Eb8F",
+    "PrivacyPools": {
+      "1": "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0",
+      "10": "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+      "0.01": "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+      "0.1": "0x5FC8d32690cc91D4c39d9d3abcBD16989F875707"
+    },
+    "denominations": {
+      "1": "1000000000000000000",
+      "10": "10000000000000000000",
+      "0.01": "10000000000000000",
+      "0.1": "100000000000000000"
+    }
+  }
+}

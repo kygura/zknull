@@ -1,0 +1,251 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "MerkleTreeWithHistory",
+  "sourceName": "contracts/MerkleTreeWithHistory.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_hasher",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "bytes32",
+          "name": "commitment",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint32",
+          "name": "leafIndex",
+          "type": "uint32"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "timestamp",
+          "type": "uint256"
+        }
+      ],
+      "name": "Deposit",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "nullifierHash",
+          "type": "bytes32"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "relayer",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "fee",
+          "type": "uint256"
+        }
+      ],
+      "name": "Withdrawal",
+      "type": "event"
+    },
+    {
+      "inputs": [],
+      "name": "LEVELS",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "ROOT_HISTORY_SIZE",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "currentRootIndex",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "filledSubtrees",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getLastRoot",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "hasher",
+      "outputs": [
+        {
+          "internalType": "contract IHasher",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_root",
+          "type": "uint256"
+        }
+      ],
+      "name": "isKnownRoot",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "nextIndex",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "rootHistory",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "roots",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "name": "zeros",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x608060405234801561001057600080fd5b5060405161047c38038061047c83398101604081905261002f9161014d565b604980546001600160a01b0319166001600160a01b0383161790556000805b60148163ffffffff16101561012a578160148263ffffffff16601481106100775761007761017d565b015581600063ffffffff8316601481106100935761009361017d565b01556049546040805180820182528481526020810185905290516314d2f97b60e11b81526001600160a01b03909216916329a5f2f6916100d591600401610193565b602060405180830381865afa1580156100f2573d6000803e3d6000fd5b505050506040513d601f19601f8201168201806040525081019061011691906101c4565b915080610122816101dd565b91505061004e565b506000818152602a60205260409020805460ff19166001179055602b555061020e565b60006020828403121561015f57600080fd5b81516001600160a01b038116811461017657600080fd5b9392505050565b634e487b7160e01b600052603260045260246000fd5b60408101818360005b60028110156101bb57815183526020928301929091019060010161019c565b50505092915050565b6000602082840312156101d657600080fd5b5051919050565b600063ffffffff80831681810361020457634e487b7160e01b600052601160045260246000fd5b6001019392505050565b61025f8061021d6000396000f3fe608060405234801561001057600080fd5b50600436106100a95760003560e01c8063e2adba8c11610071578063e2adba8c14610130578063e829558814610138578063ed33639f1461014b578063f178e47c14610176578063f1c621ee14610189578063fc7e9c6f1461019c57600080fd5b806390eeb02b146100ae578063a6232a93146100ca578063ba70f757146100fd578063c2b40ae414610105578063cd87a3b414610128575b600080fd5b6100b760285481565b6040519081526020015b60405180910390f35b6100ed6100d83660046101fa565b6000908152602a602052604090205460ff1690565b60405190151581526020016100c1565b6100b76101a5565b6100ed6101133660046101fa565b602a6020526000908152604090205460ff1681565b6100b7601e81565b6100b7601481565b6100b76101463660046101fa565b6101c3565b60495461015e906001600160a01b031681565b6040516001600160a01b0390911681526020016100c1565b6100b76101843660046101fa565b6101da565b6100b76101973660046101fa565b6101ea565b6100b760295481565b6000602b602854601e81106101bc576101bc610213565b0154905090565b601481601481106101d357600080fd5b0154905081565b600081601481106101d357600080fd5b602b81601e81106101d357600080fd5b60006020828403121561020c57600080fd5b5035919050565b634e487b7160e01b600052603260045260246000fdfea2646970667358221220f5843aa43e8583f284b5b083b849e15729908cf2693c90ded17aa2c50148456864736f6c63430008180033",
+  "deployedBytecode": "0x608060405234801561001057600080fd5b50600436106100a95760003560e01c8063e2adba8c11610071578063e2adba8c14610130578063e829558814610138578063ed33639f1461014b578063f178e47c14610176578063f1c621ee14610189578063fc7e9c6f1461019c57600080fd5b806390eeb02b146100ae578063a6232a93146100ca578063ba70f757146100fd578063c2b40ae414610105578063cd87a3b414610128575b600080fd5b6100b760285481565b6040519081526020015b60405180910390f35b6100ed6100d83660046101fa565b6000908152602a602052604090205460ff1690565b60405190151581526020016100c1565b6100b76101a5565b6100ed6101133660046101fa565b602a6020526000908152604090205460ff1681565b6100b7601e81565b6100b7601481565b6100b76101463660046101fa565b6101c3565b60495461015e906001600160a01b031681565b6040516001600160a01b0390911681526020016100c1565b6100b76101843660046101fa565b6101da565b6100b76101973660046101fa565b6101ea565b6100b760295481565b6000602b602854601e81106101bc576101bc610213565b0154905090565b601481601481106101d357600080fd5b0154905081565b600081601481106101d357600080fd5b602b81601e81106101d357600080fd5b60006020828403121561020c57600080fd5b5035919050565b634e487b7160e01b600052603260045260246000fdfea2646970667358221220f5843aa43e8583f284b5b083b849e15729908cf2693c90ded17aa2c50148456864736f6c63430008180033",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

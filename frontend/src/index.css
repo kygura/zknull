@@ -1,0 +1,165 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 3%;
+    --foreground: 0 0% 96%;
+
+    --card: 0 0% 6%;
+    --card-foreground: 0 0% 96%;
+
+    --popover: 0 0% 6%;
+    --popover-foreground: 0 0% 96%;
+
+    --primary: 160 84% 45%;
+    --primary-foreground: 0 0% 3%;
+
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 96%;
+
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 55%;
+
+    --accent: 160 84% 45%;
+    --accent-foreground: 0 0% 3%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 96%;
+
+    --border: 0 0% 18%;
+    --input: 0 0% 12%;
+    --ring: 160 84% 45%;
+
+    --radius: 0px;
+
+    /* Custom tokens */
+    --terminal-green: 160 84% 45%;
+    --surface-elevated: 0 0% 8%;
+    --surface-overlay: 0 0% 10%;
+    --text-dim: 0 0% 40%;
+  }
+
+  .dark {
+    --background: 0 0% 3%;
+    --foreground: 0 0% 96%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  ::selection {
+    @apply bg-primary text-primary-foreground;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .terminal-text {
+    font-family: 'JetBrains Mono', monospace;
+    @apply text-primary;
+  }
+
+  .brutal-border {
+    @apply border-2 border-foreground;
+  }
+
+  .brutal-border-accent {
+    @apply border-2 border-primary;
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-foreground via-muted-foreground to-foreground bg-clip-text text-transparent;
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 40px hsl(var(--primary) / 0.15);
+  }
+
+  .surface-glass {
+    @apply bg-card/80 backdrop-blur-sm;
+  }
+}
+
+@layer utilities {
+  .animate-rotate-slow {
+    animation: rotate-slow 20s linear infinite;
+  }
+
+  .animate-pulse-subtle {
+    animation: pulse-subtle 3s ease-in-out infinite;
+  }
+
+  .animate-text-reveal {
+    animation: text-reveal 0.6s ease-out forwards;
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.8s ease-out forwards;
+  }
+
+  @keyframes rotate-slow {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+  }
+
+  @keyframes pulse-subtle {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+  }
+
+  @keyframes text-reveal {
+    from { 
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to { 
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+
+  .cursor-blink::after {
+    content: '█';
+    animation: blink 1s step-end infinite;
+    @apply text-primary ml-1;
+  }
+}
