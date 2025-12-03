@@ -1,5 +1,6 @@
 import { Contract, BrowserProvider, JsonRpcSigner } from "ethers";
 import { PrivacyRouterABI, PrivacyPoolABI } from "./abis";
+
 import localhostDeployments from "../deployments/localhost.json";
 import sepoliaDeployments from "../deployments/sepolia.json";
 
@@ -18,8 +19,20 @@ const currentDeployment: DeploymentData = sepoliaDeployments;
 
 export const getPrivacyRouterAddress = () => currentDeployment.contracts.PrivacyRouter;
 
-export const getPrivacyPoolAddress = (denominationLabel: string) => {
-  return currentDeployment.contracts.PrivacyPools[denominationLabel];
+export const getPrivacyPoolAddress = (denominationValue: string) => {
+  // denominationValue is in wei (e.g., "10000000000000000" for 0.01 ETH)
+  // Find the pool by matching denomination value
+  const pools = currentDeployment.contracts.PrivacyPools;
+  const denominations = currentDeployment.contracts.denominations;
+  
+  // Find the key that matches this denomination value
+  for (const [key, value] of Object.entries(denominations)) {
+    if (value === denominationValue) {
+      return pools[key];
+    }
+  }
+  
+  return null;
 };
 
 export const getPrivacyRouterContract = (signerOrProvider: BrowserProvider | JsonRpcSigner) => {

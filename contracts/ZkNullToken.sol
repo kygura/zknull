@@ -10,7 +10,8 @@ contract ZkNullToken is ERC20, Ownable {
     }
 
     function mint(address to, uint256 amount) public {
-        require(amount <= 10000 * 10 ** decimals(), "Max mint amount per tx exceeded");
+        require(amount <= 10000 * 10 ** decimals(), 
+        "Max mint amount per tx exceeded");
         _mint(to, amount);
     }
 }
