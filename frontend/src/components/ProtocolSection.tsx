@@ -21,7 +21,8 @@ export function ProtocolSection() {
           <h2 className="font-display text-3xl md:text-5xl font-bold max-w-2xl">
             Privacy is not a feature.
             <br />
-            <span className="text-muted-foreground">It's the foundation.</span>
+            <span className="text-muted-foreground">
+            It's a meme.</span>
           </h2>
         </div>
 

@@ -87,10 +87,10 @@ export async function generateCommitment(
 
 /**
  * Format a note as a string for storage/export
- * Format: tornado-<denomination>-<secret>-<nullifier>
+ * Format: zknull-<denomination>-<secret>-<nullifier>
  */
 export function formatNote(note: Note): NoteString {
-  const noteString = `tornado-${note.denomination.toString()}-${note.secret.toString(16)}-${note.nullifier.toString(16)}`;
+  const noteString = `zknull-${note.denomination.toString()}-${note.secret.toString(16)}-${note.nullifier.toString(16)}`;
   
   return {
     secret: note.secret.toString(16),
@@ -109,7 +109,7 @@ export function formatNote(note: Note): NoteString {
 export function parseNote(noteString: string): Note | null {
   try {
     const parts = noteString.split("-");
-    if (parts.length !== 4 || parts[0] !== "tornado") {
+    if (parts.length !== 4 || parts[0] !== "zknull") {
       return null;
     }
 
@@ -134,7 +134,7 @@ export function parseNote(noteString: string): Note | null {
 /**
  * Download notes as a JSON file
  */
-export function downloadNotes(notes: NoteString[], filename: string = "tornado-notes.json") {
+export function downloadNotes(notes: NoteString[], filename: string = "zknull-notes.json") {
   const dataStr = JSON.stringify(notes, null, 2);
   const dataBlob = new Blob([dataStr], { type: "application/json" });
   const url = URL.createObjectURL(dataBlob);
@@ -153,7 +153,7 @@ export function downloadNotes(notes: NoteString[], filename: string = "tornado-n
  */
 export function saveNotesToLocalStorage(notes: NoteString[]) {
   const timestamp = new Date().toISOString();
-  const stored = localStorage.getItem("tornado-notes");
+  const stored = localStorage.getItem("zknull-notes");
   const existing = stored ? JSON.parse(stored) : [];
   
   existing.push({
@@ -161,13 +161,13 @@ export function saveNotesToLocalStorage(notes: NoteString[]) {
     notes,
   });
   
-  localStorage.setItem("tornado-notes", JSON.stringify(existing));
+  localStorage.setItem("zknull-notes", JSON.stringify(existing));
 }
 
 /**
  * Get all notes from localStorage
  */
 export function getNotesFromLocalStorage(): { timestamp: string; notes: NoteString[] }[] {
-  const stored = localStorage.getItem("tornado-notes");
+  const stored = localStorage.getItem("zknull-notes");
   return stored ? JSON.parse(stored) : [];
 }

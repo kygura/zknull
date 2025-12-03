@@ -13,6 +13,8 @@ describe("PrivacyRouter", function () {
   let user1: any;
   let user2: any;
 
+  let token: any;
+
   const DENOM_001 = ethers.parseEther("0.01");
   const DENOM_01 = ethers.parseEther("0.1");
   const DENOM_1 = ethers.parseEther("1");
@@ -20,6 +22,15 @@ describe("PrivacyRouter", function () {
 
   beforeEach(async function () {
     [owner, user1, user2] = await ethers.getSigners();
+
+    // Deploy Token
+    const ZkNullToken = await ethers.getContractFactory("ZkNullToken");
+    token = await ZkNullToken.deploy();
+    await token.waitForDeployment();
+
+    // Mint tokens to users
+    await token.mint(user1.address, ethers.parseEther("100"));
+    await token.mint(user2.address, ethers.parseEther("100"));
 
     // Deploy Hasher
     const Hasher = await ethers.getContractFactory("MockHasher");
@@ -31,29 +42,34 @@ describe("PrivacyRouter", function () {
 
     // Deploy 4 PrivacyPools
     const PrivacyPool = await ethers.getContractFactory("PrivacyPool");
+    const tokenAddr = await token.getAddress();
     
     pool001 = await PrivacyPool.deploy(
       await verifier.getAddress(),
       await hasher.getAddress(),
-      DENOM_001
+      DENOM_001,
+      tokenAddr
     );
 
     pool01 = await PrivacyPool.deploy(
       await verifier.getAddress(),
       await hasher.getAddress(),
-      DENOM_01
+      DENOM_01,
+      tokenAddr
     );
 
     pool1 = await PrivacyPool.deploy(
       await verifier.getAddress(),
       await hasher.getAddress(),
-      DENOM_1
+      DENOM_1,
+      tokenAddr
     );
 
     pool10 = await PrivacyPool.deploy(
       await verifier.getAddress(),
       await hasher.getAddress(),
-      DENOM_10
+      DENOM_10,
+      tokenAddr
     );
 
     // Deploy Router
@@ -65,6 +81,10 @@ describe("PrivacyRouter", function () {
     await router.registerPool(DENOM_01, await pool01.getAddress());
     await router.registerPool(DENOM_1, await pool1.getAddress());
     await router.registerPool(DENOM_10, await pool10.getAddress());
+
+    // Approve router to spend user tokens
+    await token.connect(user1).approve(await router.getAddress(), ethers.parseEther("100"));
+    await token.connect(user2).approve(await router.getAddress(), ethers.parseEther("100"));
   });
 
   describe("Pool Registration", function () {
@@ -89,7 +109,8 @@ describe("PrivacyRouter", function () {
       const duplicatePool = await PrivacyPool.deploy(
         await verifier.getAddress(),
         await hasher.getAddress(),
-        DENOM_1
+        DENOM_1,
+        await token.getAddress()
       );
 
       await expect(
@@ -102,7 +123,8 @@ describe("PrivacyRouter", function () {
       const newPool = await PrivacyPool.deploy(
         await verifier.getAddress(),
         await hasher.getAddress(),
-        ethers.parseEther("5")
+        ethers.parseEther("5"),
+        await token.getAddress()
       );
 
       await expect(
@@ -117,12 +139,10 @@ describe("PrivacyRouter", function () {
       const commitments = [commitment];
       const denominations = [DENOM_1];
 
-      await router.connect(user1).depositVariable(commitments, denominations, {
-        value: DENOM_1,
-      });
+      await router.connect(user1).depositVariable(commitments, denominations, await token.getAddress());
 
       // Check that pool received the deposit
-      const poolBalance = await ethers.provider.getBalance(await pool1.getAddress());
+      const poolBalance = await token.balanceOf(await pool1.getAddress());
       expect(poolBalance).to.equal(DENOM_1);
     });
 
@@ -132,9 +152,7 @@ describe("PrivacyRouter", function () {
       const denominations = [DENOM_1];
 
       await expect(
-        router.connect(user1).depositVariable(commitments, denominations, {
-          value: DENOM_1,
-        })
+        router.connect(user1).depositVariable(commitments, denominations, await token.getAddress())
       )
         .to.emit(router, "VariableDeposit")
         .withArgs(user1.address, DENOM_1, 1);
@@ -149,13 +167,11 @@ describe("PrivacyRouter", function () {
       const denominations = [DENOM_1, DENOM_01];
       const totalAmount = DENOM_1 + DENOM_01;
 
-      await router.connect(user1).depositVariable(commitments, denominations, {
-        value: totalAmount,
-      });
+      await router.connect(user1).depositVariable(commitments, denominations, await token.getAddress());
 
       // Check pool balances
-      const pool1Balance = await ethers.provider.getBalance(await pool1.getAddress());
-      const pool01Balance = await ethers.provider.getBalance(await pool01.getAddress());
+      const pool1Balance = await token.balanceOf(await pool1.getAddress());
+      const pool01Balance = await token.balanceOf(await pool01.getAddress());
 
       expect(pool1Balance).to.equal(DENOM_1);
       expect(pool01Balance).to.equal(DENOM_01);
@@ -177,9 +193,7 @@ describe("PrivacyRouter", function () {
 
       const totalAmount = ethers.parseEther("3.74");
 
-      await router.connect(user1).depositVariable(commitments, denominations, {
-        value: totalAmount,
-      });
+      await router.connect(user1).depositVariable(commitments, denominations, await token.getAddress());
 
       // Verify event
       const filter = router.filters.VariableDeposit();
@@ -196,36 +210,26 @@ describe("PrivacyRouter", function () {
       const denominations = [DENOM_1]; // Mismatch: 2 commitments, 1 denomination
 
       await expect(
-        router.connect(user1).depositVariable(commitments, denominations, {
-          value: DENOM_1,
-        })
+        router.connect(user1).depositVariable(commitments, denominations, await token.getAddress())
       ).to.be.revertedWith("Array length mismatch");
     });
 
-    it("Should reject insufficient ETH", async function () {
+    it("Should fail if transfer fails (e.g. no allowance)", async function () {
       const commitments = [123n, 456n];
       const denominations = [DENOM_1, DENOM_01];
-      const totalRequired = DENOM_1 + DENOM_01;
-      const insufficientAmount = DENOM_1; // Only sending 1 ETH instead of 1.1
+      
+      // Reset allowance
+      await token.connect(user1).approve(await router.getAddress(), 0);
 
       await expect(
-        router.connect(user1).depositVariable(commitments, denominations, {
-          value: insufficientAmount,
-        })
-      ).to.be.revertedWith("Incorrect ETH amount sent");
+        router.connect(user1).depositVariable(commitments, denominations, await token.getAddress())
+      ).to.be.revertedWithCustomError(token, "ERC20InsufficientAllowance");
+      
+      // Restore allowance
+      await token.connect(user1).approve(await router.getAddress(), ethers.parseEther("100"));
     });
 
-    it("Should reject excess ETH", async function () {
-      const commitments = [123n];
-      const denominations = [DENOM_1];
-      const excessAmount = DENOM_1 + ethers.parseEther("0.5");
-
-      await expect(
-        router.connect(user1).depositVariable(commitments, denominations, {
-          value: excessAmount,
-        })
-      ).to.be.revertedWith("Incorrect ETH amount sent");
-    });
+    // Excess ETH test is not relevant for ERC20 as contract pulls exact amount
 
     it("Should reject unregistered denomination", async function () {
       const commitments = [123n];
@@ -233,15 +237,13 @@ describe("PrivacyRouter", function () {
       const denominations = [unregisteredDenom];
 
       await expect(
-        router.connect(user1).depositVariable(commitments, denominations, {
-          value: unregisteredDenom,
-        })
+        router.connect(user1).depositVariable(commitments, denominations, await token.getAddress())
       ).to.be.revertedWith("Pool not found for denomination");
     });
 
     it("Should reject empty deposit", async function () {
       await expect(
-        router.connect(user1).depositVariable([], [], { value: 0 })
+        router.connect(user1).depositVariable([], [], await token.getAddress())
       ).to.be.revertedWith("Empty deposit");
     });
   });
@@ -250,19 +252,24 @@ describe("PrivacyRouter", function () {
     it("Should allow direct deposit to PrivacyPool", async function () {
       const commitment = 54321n;
       
-      await pool1.connect(user1).deposit(commitment, { value: DENOM_1 });
+      // Approve pool
+      await token.connect(user1).approve(await pool1.getAddress(), DENOM_1);
+
+      await pool1.connect(user1).deposit(commitment);
       
-      const poolBalance = await ethers.provider.getBalance(await pool1.getAddress());
+      const poolBalance = await token.balanceOf(await pool1.getAddress());
       expect(poolBalance).to.equal(DENOM_1);
     });
 
-    it("Should prevent deposits with wrong denomination", async function () {
+    it("Should fail if transfer fails (e.g. no allowance)", async function () {
       const commitment = 54321n;
-      const wrongAmount = ethers.parseEther("0.5");
       
+      // No allowance
+      await token.connect(user1).approve(await pool1.getAddress(), 0);
+
       await expect(
-        pool1.connect(user1).deposit(commitment, { value: wrongAmount })
-      ).to.be.revertedWith("Invalid denomination");
+        pool1.connect(user1).deposit(commitment)
+      ).to.be.revertedWithCustomError(token, "ERC20InsufficientAllowance");
     });
   });
 });

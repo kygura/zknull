@@ -1,15 +1,16 @@
 {
   "network": "sepolia",
-  "timestamp": "2025-12-02T20:23:13.854Z",
+  "timestamp": "2025-12-03T01:20:12.525Z",
   "contracts": {
-    "Hasher": "0xC96604b0d72dffFDc028e1edd311FA0b9C7b8bDc",
-    "Verifier": "0xC4762D52c601C992c4FC5c2309684Ca4834a4c66",
-    "PrivacyRouter": "0x357B7ef3fbd0bAD59D739f9e824aC051434cA5C4",
+    "ZkNullToken": "0xc08a7930dD9388e4b5E0A51fE6b54A1Cfcc5B7bB",
+    "Hasher": "0x9ef6E6ed9E772a43013ef4f179F71835D90bA66c",
+    "Verifier": "0xaAD9d1Fe63a690F00AE925F34DDf17f8d7634C06",
+    "PrivacyRouter": "0x70469bb5c844c0005822D27472785c127822235C",
     "PrivacyPools": {
-      "1": "0xf1C542d786F147066A443955b2Caf575b806Fd56",
-      "10": "0x77Ab394B7244e0B8fd1c76396D7caD0c3c55b9f4",
-      "0.01": "0x177Ab1347A768860928731740094e8ec16Da91cF",
-      "0.1": "0x538AA5d763b7da2f94bE4b83d692EDfaF8C4f6d2"
+      "1": "0x6659305cd24Dc6Ab72DBc173350ae84B1b0a3156",
+      "10": "0x3796c35C02C8DCD9b127310D6266be4eBb9C320C",
+      "0.01": "0x60f62cb9D5fCeaA0052D9657bBA3dD2888969f84",
+      "0.1": "0xCD5DA2491BA96F5EF0eeb880AEd2840e9f3Fa518"
     },
     "denominations": {
       "1": "1000000000000000000",

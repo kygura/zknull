@@ -13,7 +13,15 @@ async function main() {
     "10": ethers.parseEther("10"),
   };
 
-  // 1. Deploy Poseidon Hasher
+  // 1. Deploy zkNull Token
+  console.log("Deploying zkNull Token...");
+  const ZkNullToken = await ethers.getContractFactory("ZkNullToken");
+  const token = await ZkNullToken.deploy();
+  await token.waitForDeployment();
+  const tokenAddress = await token.getAddress();
+  console.log(`✓ zkNull Token deployed to: ${tokenAddress}\n`);
+
+  // 2. Deploy Poseidon Hasher
   console.log("Deploying Poseidon Hasher...");
   const { poseidonContract } = require("circomlibjs");
   const PoseidonHasher = new ethers.ContractFactory(
@@ -26,7 +34,7 @@ async function main() {
   const hasherAddress = await hasher.getAddress();
   console.log(`✓ Poseidon Hasher deployed to: ${hasherAddress}\n`);
 
-  // 2. Deploy Verifier
+  // 3. Deploy Verifier
   console.log("Deploying Verifier...");
   const Verifier = await ethers.getContractFactory("Groth16Verifier");
   const verifier = await Verifier.deploy();
@@ -34,26 +42,27 @@ async function main() {
   const verifierAddress = await verifier.getAddress();
   console.log(`✓ Verifier deployed to: ${verifierAddress}\n`);
 
-  // 3. Deploy 4 PrivacyPool instances
+  // 4. Deploy 4 PrivacyPool instances
   console.log("Deploying PrivacyPool instances...");
   const PrivacyPool = await ethers.getContractFactory("PrivacyPool");
   const pools: { [key: string]: string } = {};
 
   for (const [label, denomination] of Object.entries(denominations)) {
-    console.log(`  Deploying pool for ${label} ETH...`);
+    console.log(`  Deploying pool for ${label} ZKN...`);
     const pool = await PrivacyPool.deploy(
       verifierAddress,
       hasherAddress,
-      denomination
+      denomination,
+      tokenAddress
     );
     await pool.waitForDeployment();
     const poolAddress = await pool.getAddress();
     pools[label] = poolAddress;
-    console.log(`  ✓ Pool ${label} ETH: ${poolAddress}`);
+    console.log(`  ✓ Pool ${label} ZKN: ${poolAddress}`);
   }
   console.log();
 
-  // 4. Deploy PrivacyRouter
+  // 5. Deploy PrivacyRouter
   console.log("Deploying PrivacyRouter...");
   const PrivacyRouter = await ethers.getContractFactory("PrivacyRouter");
   const router = await PrivacyRouter.deploy();
@@ -77,6 +86,7 @@ async function main() {
     network: (await ethers.provider.getNetwork()).name,
     timestamp: new Date().toISOString(),
     contracts: {
+      ZkNullToken: tokenAddress,
       Hasher: hasherAddress,
       Verifier: verifierAddress,
       PrivacyRouter: routerAddress,
@@ -103,12 +113,13 @@ async function main() {
   console.log("=" .repeat(60));
   console.log("DEPLOYMENT SUMMARY");
   console.log("=" .repeat(60));
+  console.log(`zkNull Token:    ${tokenAddress}`);
   console.log(`Hasher:          ${hasherAddress}`);
   console.log(`Verifier:        ${verifierAddress}`);
   console.log(`PrivacyRouter:   ${routerAddress}`);
   console.log("\nPrivacyPools:");
   for (const [label, address] of Object.entries(pools)) {
-    console.log(`  ${label.padEnd(6)} ETH: ${address}`);
+    console.log(`  ${label.padEnd(6)} ZKN: ${address}`);
   }
   console.log("=" .repeat(60));
 }

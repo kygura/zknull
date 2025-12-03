@@ -2,6 +2,7 @@
 pragma solidity ^0.8.20;
 
 import "./MerkleTreeWithHistory.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 interface IVerifier {
     function verifyProof(
@@ -19,6 +20,7 @@ interface IVerifier {
  */
 contract PrivacyPool is MerkleTreeWithHistory {
     IVerifier public verifier;
+    IERC20 public token;
     uint256 public denomination;
     
     mapping(uint256 => bool) public nullifierHashes;
@@ -40,29 +42,32 @@ contract PrivacyPool is MerkleTreeWithHistory {
      * @param _verifier Address of the ZK verifier contract
      * @param _hasher Address of the Poseidon hasher contract
      * @param _denomination The fixed denomination for this pool (in wei)
+     * @param _token Address of the zkNull token
      */
     constructor(
         address _verifier,
         address _hasher,
-        uint256 _denomination
+        uint256 _denomination,
+        address _token
     ) MerkleTreeWithHistory(_hasher) {
         require(_denomination > 0, "Denomination must be greater than 0");
         verifier = IVerifier(_verifier);
         denomination = _denomination;
+        token = IERC20(_token);
     }
 
     /**
-     * @dev Deposit ETH into the pool
+     * @dev Deposit tokens into the pool
      * @param _commitment The commitment hash (Poseidon(secret, nullifier))
      */
-    function deposit(uint256 _commitment) external payable nonReentrant {
-        require(msg.value == denomination, "Invalid denomination");
+    function deposit(uint256 _commitment) external nonReentrant {
+        require(token.transferFrom(msg.sender, address(this), denomination), "Transfer failed");
         uint32 insertedIndex = _insert(_commitment);
         emit PoolDeposit(bytes32(_commitment), insertedIndex, block.timestamp);
     }
 
     /**
-     * @dev Withdraw ETH from the pool using a ZK proof
+     * @dev Withdraw tokens from the pool using a ZK proof
      * @param _proof_a ZK proof component a
      * @param _proof_b ZK proof component b
      * @param _proof_c ZK proof component c
@@ -83,7 +88,7 @@ contract PrivacyPool is MerkleTreeWithHistory {
         address _relayer,
         uint256 _fee,
         uint256 _refund
-    ) external payable nonReentrant {
+    ) external nonReentrant {
         require(_fee <= denomination, "Fee exceeds transfer value");
         require(!nullifierHashes[_nullifierHash], "The note has been already spent");
         require(isKnownRoot(_root), "Cannot find your merkle root");
@@ -107,12 +112,10 @@ contract PrivacyPool is MerkleTreeWithHistory {
 
         nullifierHashes[_nullifierHash] = true;
 
-        (bool success, ) = _recipient.call{value: denomination - _fee}("");
-        require(success, "Payment to recipient failed");
+        require(token.transfer(_recipient, denomination - _fee), "Payment to recipient failed");
         
         if (_fee > 0) {
-            (success, ) = _relayer.call{value: _fee}("");
-            require(success, "Payment to relayer failed");
+            require(token.transfer(_relayer, _fee), "Payment to relayer failed");
         }
         
         emit PoolWithdrawal(_recipient, bytes32(_nullifierHash), _relayer, _fee);

@@ -12,7 +12,8 @@ export function HeroSection() {
           <h1 className="font-display text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight">
             zk<span className="text-primary">Null</span>
           </h1>
-          <p className="font-mono text-muted-foreground text-sm md:text-base">Private capital for the decentralized economy</p>
+          <p className="font-mono text-muted-foreground text-sm md:text-base">
+          Private capital for the decentralized economy</p>
         </div>
 
         {/* Rotating Tagline */}

@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 interface IPrivacyPool {
-    function deposit(uint256 commitment) external payable;
+    function deposit(uint256 commitment) external;
     function denomination() external view returns (uint256);
 }
 
@@ -63,16 +65,20 @@ contract PrivacyRouter {
      * @dev Deposit variable amount across multiple pools
      * @param _commitments Array of commitment hashes
      * @param _denominations Array of denominations corresponding to each commitment
+     * @param _token Address of the zkNull token
      */
     function depositVariable(
         uint256[] calldata _commitments,
-        uint256[] calldata _denominations
-    ) external payable {
+        uint256[] calldata _denominations,
+        address _token
+    ) external {
         require(_commitments.length > 0, "Empty deposit");
         require(
             _commitments.length == _denominations.length,
             "Array length mismatch"
         );
+        
+        IERC20 token = IERC20(_token);
         
         // Calculate total required value
         uint256 totalRequired = 0;
@@ -80,7 +86,8 @@ contract PrivacyRouter {
             totalRequired += _denominations[i];
         }
         
-        require(msg.value == totalRequired, "Incorrect ETH amount sent");
+        // Transfer tokens from user to this contract
+        require(token.transferFrom(msg.sender, address(this), totalRequired), "Transfer failed");
         
         // Route each deposit to the appropriate pool
         for (uint256 i = 0; i < _commitments.length; i++) {
@@ -89,11 +96,14 @@ contract PrivacyRouter {
             
             require(poolAddress != address(0), "Pool not found for denomination");
             
+            // Approve pool to spend tokens
+            token.approve(poolAddress, denomination);
+            
             // Forward the deposit to the pool
-            IPrivacyPool(poolAddress).deposit{value: denomination}(_commitments[i]);
+            IPrivacyPool(poolAddress).deposit(_commitments[i]);
         }
         
-        emit VariableDeposit(msg.sender, msg.value, _commitments.length);
+        emit VariableDeposit(msg.sender, totalRequired, _commitments.length);
     }
     
     /**
