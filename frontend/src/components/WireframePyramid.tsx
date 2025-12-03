@@ -11,25 +11,27 @@ function Pyramid() {
       groupRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.1;
     }
   });
-
+  const green = "#22c55e";
+  const gray = "#0f212dff;"
+  const variant = "#ac2bcdff";
   return (
     <group ref={groupRef}>
       {/* Main pyramid wireframe */}
       <mesh>
         <coneGeometry args={[1.5, 2.2, 4, 1]} />
-        <meshBasicMaterial color="#22c55e" wireframe transparent opacity={0.9} />
+        <meshBasicMaterial color={gray} wireframe transparent opacity={0.9} />
       </mesh>
       
       {/* Inner solid with low opacity */}
       <mesh>
         <coneGeometry args={[1.5, 2.2, 4, 1]} />
-        <meshBasicMaterial color="#22c55e" transparent opacity={0.05} />
+        <meshBasicMaterial color={gray} transparent opacity={0.05} />
       </mesh>
 
       {/* Outer wireframe frame */}
       <mesh scale={1.15}>
         <coneGeometry args={[1.5, 2.2, 4, 1]} />
-        <meshBasicMaterial color="#22c55e" wireframe transparent opacity={0.3} />
+        <meshBasicMaterial color={gray} wireframe transparent opacity={0.3} />
       </mesh>
     </group>
   );

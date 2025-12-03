@@ -21,9 +21,12 @@ export function HeroSection() {
  
 
         {/* Terminal-style status */}
-        <div className="mt-8 font-mono text-sm border border-border bg-card px-6 py-3 ">
+        <div className="mt-4 font-mono text-sm border border-border bg-card px-6 py-3 ">
         <span className='text-muted-foreground'>status: </span>
-        live on <span className="text-primary animate-pulse">::sepolia testnet::</span>
+        <span className="animate-pulse">
+        live on 
+        </span>
+        <span className="text-primary animate-pulse"> ::sepolia::</span> 
         
         </div>
       </div>
