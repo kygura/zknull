@@ -26,6 +26,7 @@ import type {
 export interface ZkNullTokenInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "MAX_SUPPLY"
       | "allowance"
       | "approve"
       | "balanceOf"
@@ -45,6 +46,10 @@ export interface ZkNullTokenInterface extends Interface {
     nameOrSignatureOrTopic: "Approval" | "OwnershipTransferred" | "Transfer"
   ): EventFragment;
 
+  encodeFunctionData(
+    functionFragment: "MAX_SUPPLY",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [AddressLike, AddressLike]
@@ -86,6 +91,7 @@ export interface ZkNullTokenInterface extends Interface {
     values: [AddressLike]
   ): string;
 
+  decodeFunctionResult(functionFragment: "MAX_SUPPLY", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
@@ -205,6 +211,8 @@ export interface ZkNullToken extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  MAX_SUPPLY: TypedContractMethod<[], [bigint], "view">;
+
   allowance: TypedContractMethod<
     [owner: AddressLike, spender: AddressLike],
     [bigint],
@@ -259,6 +267,9 @@ export interface ZkNullToken extends BaseContract {
     key: string | FunctionFragment
   ): T;
 
+  getFunction(
+    nameOrSignature: "MAX_SUPPLY"
+  ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
     nameOrSignature: "allowance"
   ): TypedContractMethod<

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 
 const taglines = [
-  "The future of free-moving capital.",
-  "The first private stack and integrated stablecoin on the EVM.",
+  "A future for free-moving capital.",
+  "Off-chain privacy enabled by zkProofs.",
+  "Unlocking privacy in DeFi.",
+  "Confidential transactions, powered by ZK.",
 ];
 
 export function RotatingTagline() {

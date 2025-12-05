@@ -1,13 +1,13 @@
 /**
- * Decomposition utilities for breaking down ETH amounts into fixed denominations
+ * Decomposition utilities for breaking down ZKN amounts into fixed denominations
  */
 
 // Standard denominations in wei (descending order for greedy algorithm)
 export const DENOMINATIONS = [
-  { label: "10 ETH", value: 10n * 10n ** 18n },
-  { label: "1 ETH", value: 1n * 10n ** 18n },
-  { label: "0.1 ETH", value: 1n * 10n ** 17n },
-  { label: "0.01 ETH", value: 1n * 10n ** 16n },
+  { label: "10 ZKN", value: 10n * 10n ** 18n },
+  { label: "1 ZKN", value: 1n * 10n ** 18n },
+  { label: "0.1 ZKN", value: 1n * 10n ** 17n },
+  { label: "0.01 ZKN", value: 1n * 10n ** 16n },
 ] as const;
 
 export interface DecompositionResult {
@@ -24,7 +24,7 @@ export interface DecompositionResult {
  * @returns Array of denomination values
  * 
  * @example
- * // Returns [1 ETH, 1 ETH, 1 ETH, 0.1 ETH, 0.1 ETH, 0.1 ETH, 0.1 ETH, 0.1 ETH, 0.1 ETH, 0.1 ETH, 0.01 ETH x5]
+ * // Returns [1 ZKN, 1 ZKN, 1 ZKN, 0.1 ZKN, 0.1 ZKN, 0.1 ZKN, 0.1 ZKN, 0.1 ZKN, 0.1 ZKN, 0.1 ZKN, 0.01 ZKN x5]
  * decomposeAmount(parseEther("3.75"))
  */
 export function decomposeAmount(amount: bigint): DecompositionResult {

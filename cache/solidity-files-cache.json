@@ -494,8 +494,8 @@
       ]
     },
     "/home/athan/projects/nca-projects/zknull/contracts/ZkNullToken.sol": {
-      "lastModificationDate": 1764724402511,
-      "contentHash": "844552039d4666acc29fc84940d35689",
+      "lastModificationDate": 1764895237023,
+      "contentHash": "fa8fe8abc9b03463856c570019df470d",
       "sourceName": "contracts/ZkNullToken.sol",
       "solcConfig": {
         "version": "0.8.24",
