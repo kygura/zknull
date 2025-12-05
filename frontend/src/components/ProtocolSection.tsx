@@ -66,10 +66,7 @@ export function ProtocolSection() {
             burnt: <span className="text-foreground">0</span>,
           </div>
 
-          <div className="pl-4 text-muted-foreground">
-            collateral_ratio: <span className="text-primary">1.12
-            </span>,
-          </div>
+
           <div className="text-muted-foreground">{'}'}</div>
         </div>
       </div>
