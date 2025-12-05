@@ -1,4 +1,8 @@
+import { useTokenStats } from '../hooks/useTokenStats';
+
 export function ProtocolSection() {
+  const stats = useTokenStats();
+
   const features = [{
     label: '01',
     title: 'Zero-Knowledge Proofs',
@@ -12,11 +16,12 @@ export function ProtocolSection() {
     title: 'Integrated Stablecoin',
     description: 'zkNull serves as a private and stable unit of account.'
   }];
+
   return <section id="protocol" className="py-24 px-6">
     <div className="max-w-5xl mx-auto">
       {/* Section header */}
       <div className="mb-20">
-        <div className="font-mono text-sm text-muted-foreground mb-4">// core <span className="text-primary">//</span> protocol
+        <div className="font-mono text-sm text-muted-foreground mb-4">// core <span className="text-primary">//</span> protocol
         </div>
         <h2 className="font-display text-3xl md:text-5xl font-bold max-w-2xl">
           Privacy is not a feature.
@@ -54,19 +59,22 @@ export function ProtocolSection() {
             <span className="text-primary">const</span> zkStats = {'{'}
           </div>
           <div className="pl-4 text-muted-foreground">
-            ticker: <span className="text-foreground">$ZKN</span>,
+            ticker: <span className="text-foreground">{stats.ticker}</span>,
           </div>
           <div className="pl-4 text-muted-foreground">
-            total_supply: <span className="text-foreground">10_000_000</span>,
+            max_supply: <span className="text-foreground">{stats.maxSupply}</span>,
           </div>
           <div className="pl-4 text-muted-foreground">
-            circulating: <span className="text-foreground">1_000_000</span>,
+            circulating: <span className="text-foreground">{stats.circulating}</span>,
           </div>
           <div className="pl-4 text-muted-foreground">
-            burnt: <span className="text-foreground">0</span>,
+            burnt: <span className="text-foreground">{stats.burnt}</span>,
           </div>
-
-
+          {stats.loading && (
+            <div className="pl-4 text-muted-foreground text-xs">
+              <span className="text-primary animate-pulse">// fetching live data...</span>
+            </div>
+          )}
           <div className="text-muted-foreground">{'}'}</div>
         </div>
       </div>

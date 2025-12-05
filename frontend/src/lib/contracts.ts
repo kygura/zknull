@@ -1,8 +1,8 @@
 import { Contract, BrowserProvider, JsonRpcSigner } from "ethers";
 import { PrivacyRouterABI, PrivacyPoolABI } from "./abis";
 
-import localhostDeployments from "../deployments/localhost.json";
 import sepoliaDeployments from "../deployments/sepolia.json";
+//import localhostDeployments from "../deployments/localhost.json";
 
 // Type for deployment data
 interface DeploymentData {
