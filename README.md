@@ -1,4 +1,4 @@
-# Variable-Amount Privacy Mixer
+# zkNull - Privacy Mixer
 
 A privacy-preserving mixer that allows variable amount deposits by decomposing them into fixed denominations.
 
